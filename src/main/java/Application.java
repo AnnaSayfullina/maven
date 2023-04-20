@@ -1,26 +1,46 @@
 import java.sql.*;
+import java.util.List;
+import java.util.Scanner;
+
 public class Application {
     public static void main(String[] args) {
-        final String user = "postgres";
-        final String password = "Anna_098!";
-        final String url = "jdbc:postgresql://localhost:5432/skyprosql";
-        try (final Connection connection =
-                     DriverManager.getConnection(url, user, password);
-        PreparedStatement statement =
-                connection.prepareStatement("SELECT * FROM employee JOIN city ON employee.city_id = city.city_id WHERE id = 1")) {
+        EmployeeDAO employeeDAO = new EmployeeDAOImpl();
+        Scanner scanner = new Scanner(System.in);
 
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                System.out.println("Имя: " + resultSet.getString("first_name"));
-                System.out.println("Фамилия: " + resultSet.getString("last_name"));
-                System.out.println("Id сотрудника: " + resultSet.getInt("id"));
-                System.out.println("Пол: " + resultSet.getString("gender"));
-                System.out.println("Город проживания: " + resultSet.getString("city_name"));
-            }
+        /**
+         * Создание (добавление) сущности Employee в таблицу.
+         */
+        employeeDAO.createEmployee(new Employee("Матвей", "Матвеев", "муж", 45, 6));
 
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к базе данных!");
-            e.printStackTrace();
+
+        /**
+         * Получение конкретного объекта Employee по id.
+         */
+        System.out.println("Введите id сотрудника для поиска в базе");
+        int id = scanner.nextInt();
+        Employee employee = employeeDAO.getEmployeeById(id);
+        System.out.println(employee);
+
+        /**Получение списка всех объектов Employee из базы.
+         */
+        System.out.println("Все сотрудники");
+        List<Employee> employees = employeeDAO.getAllEmployees();
+        for (Employee emp: employees){
+            System.out.println(emp);
         }
+        /**
+         * Изменение конкретного объекта Employee в базе по id.
+         */
+        System.out.println("Введите id сотрудника для изменения в базе");
+        id = scanner.nextInt();
+        employeeDAO.updateEmployeeById(id);
+
+        /**
+         * Удаление конкретного объекта Employee в базе по id.
+         */
+        System.out.println("Введите id сотрудника для удаления в базе");
+        id = scanner.nextInt();
+        employeeDAO.deleteEmployeeById(id);
+
     }
 }
