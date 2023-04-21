@@ -16,11 +16,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
                      connection.prepareStatement(sql)) {
-            statement.setString(1, employee.getFirst_name());
-            statement.setString(2, employee.getLast_name());
+            statement.setString(1, employee.getFirstName());
+            statement.setString(2, employee.getLastName());
             statement.setString(3, employee.getGender());
             statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getCity_id());
+            statement.setInt(5, employee.getCityId());
 
             statement.executeUpdate();
             System.out.println("Сотрудник занесен в базу");
@@ -46,9 +46,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 String last_name = resultSet.getString("last_name");
                 String gender = resultSet.getString("gender");
                 int age = resultSet.getInt("age");
-                int city_id = resultSet.getInt("city_id");
+                int cityId = resultSet.getInt("city_id");
 
-                employee = new Employee(id, first_name, last_name, gender, age, city_id);
+                employee = new Employee(id, first_name, last_name, gender, age, cityId);
             }
 
         } catch (
@@ -71,13 +71,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String first_name = resultSet.getString("first_name");
-                String last_name = resultSet.getString("last_name");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
                 String gender = resultSet.getString("gender");
                 int age = resultSet.getInt("age");
-                int city_id = resultSet.getInt("city_id");
+                int cityId = resultSet.getInt("city_id");
 
-                employeeList.add(new Employee(id, first_name, last_name, gender, age, city_id));
+                employeeList.add(new Employee(id, firstName, lastName, gender, age, cityId));
             }
 
         } catch (
@@ -89,31 +89,20 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public void updateEmployeeById(int id) {
+    public void updateEmployeeById(int id, Employee employee) {
         String sql = "UPDATE employee SET first_name = ?, last_name =?, gender = ?, age = ?, city_id = ? WHERE id = ?";
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement =
                      connection.prepareStatement(sql)) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Введите имя");
-            String first_name = scanner.nextLine();
-            System.out.println("Введите фамилию");
-            String last_name = scanner.nextLine();
-            System.out.println("Введите пол");
-            String gender = scanner.nextLine();
-            System.out.println("Введите возраст");
-            int age = scanner.nextInt();
-            System.out.println("Введите id города");
-            int city_id = scanner.nextInt();
 
-                    statement.setString(1, first_name);
-                    statement.setString(2, last_name);
-                    statement.setString(3, gender);
-                    statement.setInt(4, age);
-                    statement.setInt(5, city_id);
+                    statement.setString(1, employee.getFirstName());
+                    statement.setString(2, employee.getLastName());
+                    statement.setString(3, employee.getGender());
+                    statement.setInt(4, employee.getAge());
+                    statement.setInt(5, employee.getCityId());
                     statement.setInt(6, id);
             statement.executeUpdate();
-            System.out.println("Изменение внесены");
+            System.out.println("Изменения внесены");
         } catch (
                 SQLException e) {
             System.out.println("Ошибка при подключении к базе данных!");

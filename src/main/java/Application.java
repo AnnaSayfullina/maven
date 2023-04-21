@@ -10,7 +10,9 @@ public class Application {
         /**
          * Создание (добавление) сущности Employee в таблицу.
          */
-        employeeDAO.createEmployee(new Employee("Матвей", "Матвеев", "муж", 45, 6));
+        System.out.println("Для добавления сотрудника введите следующие данные:");
+        Employee employee = enterInformationWithScanner();
+        employeeDAO.createEmployee(employee);
 
 
         /**
@@ -18,8 +20,12 @@ public class Application {
          */
         System.out.println("Введите id сотрудника для поиска в базе");
         int id = scanner.nextInt();
-        Employee employee = employeeDAO.getEmployeeById(id);
-        System.out.println(employee);
+        Employee employee2 = employeeDAO.getEmployeeById(id);
+        if(employee2 == null){
+            System.out.println("сотрудник в базе не найден");
+        } else {
+            System.out.println(employee2);
+        }
 
         /**Получение списка всех объектов Employee из базы.
          */
@@ -33,7 +39,8 @@ public class Application {
          */
         System.out.println("Введите id сотрудника для изменения в базе");
         id = scanner.nextInt();
-        employeeDAO.updateEmployeeById(id);
+        Employee employee1 = enterInformationWithScanner();
+        employeeDAO.updateEmployeeById(id, employee1);
 
         /**
          * Удаление конкретного объекта Employee в базе по id.
@@ -42,5 +49,20 @@ public class Application {
         id = scanner.nextInt();
         employeeDAO.deleteEmployeeById(id);
 
+    }
+    public static Employee enterInformationWithScanner(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите имя");
+        String first_name = scanner.nextLine();
+        System.out.println("Введите фамилию");
+        String last_name = scanner.nextLine();
+        System.out.println("Введите пол");
+        String gender = scanner.nextLine();
+        System.out.println("Введите возраст");
+        int age = scanner.nextInt();
+        System.out.println("Введите id города");
+        int cityId = scanner.nextInt();
+        Employee employee = new Employee(first_name, last_name, gender,age,cityId);
+        return employee;
     }
 }
