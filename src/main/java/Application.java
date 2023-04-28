@@ -1,3 +1,7 @@
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.sql.*;
 import java.util.List;
 import java.util.Scanner;
@@ -8,12 +12,11 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
 
         /**
-         * Создание (добавление) сущности Employee в таблицу.
+        * Создание (добавление) сущности Employee в таблицу.
          */
         System.out.println("Для добавления сотрудника введите следующие данные:");
         Employee employee = enterInformationWithScanner();
         employeeDAO.createEmployee(employee);
-
 
         /**
          * Получение конкретного объекта Employee по id.
@@ -34,20 +37,28 @@ public class Application {
         for (Employee emp: employees){
             System.out.println(emp);
         }
+
         /**
          * Изменение конкретного объекта Employee в базе по id.
          */
         System.out.println("Введите id сотрудника для изменения в базе");
         id = scanner.nextInt();
+        Employee employee5 = employeeDAO.getEmployeeById(id);
         Employee employee1 = enterInformationWithScanner();
-        employeeDAO.updateEmployeeById(id, employee1);
+        employee1.setId(employee5.getId());
+        employeeDAO.updateEmployeeById(employee1);
+
 
         /**
          * Удаление конкретного объекта Employee в базе по id.
          */
         System.out.println("Введите id сотрудника для удаления в базе");
         id = scanner.nextInt();
-        employeeDAO.deleteEmployeeById(id);
+        Employee employee4 = employeeDAO.getEmployeeById(id);
+        employeeDAO.deleteEmployeeById(employee4);
+
+        HibernateUtil.closeEntityManagerFactory();
+
 
     }
     public static Employee enterInformationWithScanner(){
