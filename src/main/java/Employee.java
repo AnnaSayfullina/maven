@@ -20,27 +20,35 @@ public class Employee {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "city_id")
-    private int cityId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "city_id")
+    private City city;
 
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String gender, int age, int cityId) {
+    public Employee(String firstName, String lastName, String gender, int age, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
+        this.city = city;
     }
 
-    public Employee(int id, String firstName, String lastName, String gender, int age, int cityId) {
+    public Employee(String firstName, String lastName, String gender, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    public Employee(int id, String firstName, String lastName, String gender, int age, City city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
+        this.city = city;
     }
 
     public int getId() {
@@ -83,12 +91,12 @@ public class Employee {
         this.age = age;
     }
 
-    public int getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
@@ -99,7 +107,7 @@ public class Employee {
                 ", last_name='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", city_id=" + cityId +
+                ", city=" + city +
                 '}';
     }
 }
