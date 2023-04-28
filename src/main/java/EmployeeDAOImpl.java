@@ -58,7 +58,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         employeeId.setLastName(employee.getLastName());
         employeeId.setGender(employee.getGender());
         employeeId.setAge(employee.getAge());
-        employeeId.setCityId(employee.getCityId());
+        employeeId.setCity(employee.getCity());
         entityManager.merge(employeeId);
 
         entityManager.getTransaction().commit();
